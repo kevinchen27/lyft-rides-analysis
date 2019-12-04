@@ -1,0 +1,155 @@
+---
+title: "lyft"
+author: "Kevin Chen"
+date: "November 21, 2019"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Load packages
+```{r}
+library(tidyverse)
+library(lubridate)
+```
+
+#Load Data
+```{r}
+ride_id = read.csv("C:\\Users\\Kevin Chen\\Documents\\Python Summer\\Lyft Analysis\\ride_ids.csv", na.strings = c(""))
+driver_id = read.csv("C:\\Users\\Kevin Chen\\Documents\\Python Summer\\Lyft Analysis\\driver_ids.csv", na.strings = c(""))
+ride_timestamp = read.csv("C:\\Users\\Kevin Chen\\Documents\\Python Summer\\Lyft Analysis\\ride_timestamps.csv", na.strings = c(""))
+```
+
+## First inspection
+```{r}
+driver_id %>% head()
+ride_id %>% head()
+ride_timestamp %>% head()
+ride_timestamp$timestamp %>% summary()
+```
+
+## Check for NAs/weird values
+```{r}
+driver_id %>% summary()
+class(driver_id$driver_id)
+#check which columns have NA
+colnames(driver_id)[colSums(is.na(driver_id)) > 0]
+
+ride_id %>% summary() #minimum ride distance is negative. Distance shouldn't be negative
+#Maximum is 724679, which shouldn't be the case
+#Looking at the large values for ride distance, I am assuming that the distance is measured in meters
+colnames(ride_id)[colSums(is.na(ride_id)) > 0]
+ride_id <- ride_id %>% filter(ride_distance > 0 & ride_distance < 528000)
+
+ride_timestamp %>% summary()
+colnames(ride_timestamp)[colSums(is.na(ride_timestamp)) > 0]
+filter(ride_timestamp, is.na(timestamp)) %>% select(ride_id)
+filter(ride_timestamp, ride_id == "72f0fa0bd86800e9da5c4dced32c8735")
+#arived at is NA
+
+
+```
+
+
+# Data Analysis
+```{r}
+#join data sets, first ride and driver id
+lyft1 <- inner_join(ride_id, driver_id, by = "driver_id")
+#join timestamps with corresponding rides
+lyft2 <- inner_join(lyft1, ride_timestamp, by = "ride_id")
+```
+
+## Request acceptance rate
+```{r}
+lyft2 %>% summarise(acceptance_rate = sum(event == "accepted_at")/sum(event == "requested_at"))
+```
+
+## Percent of successfull pickups
+```{r}
+lyft2 %>% summarise(success = sum(event == "picked_up_at")/sum(event == "accepted_at"))
+```
+
+
+## Find mean difference between accepted and requested time across prime time groups
+```{r}
+#separate events into separate olumns with their corresponding times
+lyft3 <- lyft2 %>% spread(event, timestamp) 
+
+head(lyft3) %>% View()
+
+lyft3[,7:11] <- lyft3[,7:11] %>% mutate_all( ymd_hms)
+
+#find mean difference between accepted and requested times
+mean_diff <- lyft3 %>% group_by(ride_prime_time) %>% summarise(Mean_Diff = mean(accepted_at - requested_at)) %>% data.frame()
+ggplot(mean_diff) + geom_bar(aes(factor(ride_prime_time), Mean_Diff, fill = factor(ride_prime_time)), stat = "identity") + theme(legend.position = "none") + labs(x = "Prime Time", y = "Mean Time Difference", title = "Mean Time Difference Between Acceptance and Request")
+lyft3 %>% filter(ride_prime_time == 300) %>% nrow()
+lyft3 %>% filter(ride_prime_time == 300) %>% mutate(difference = accepted_at - requested_at)
+lyft3 %>% filter(ride_prime_time == 400) %>% mutate(difference = accepted_at - requested_at)
+```
+
+## Riders with least number of rides (completed)
+```{r}
+lyft2 %>% filter(event == "dropped_off_at") %>% group_by(driver_id) %>% summarise(total_rides = n()) %>% arrange(total_rides)
+```
+
+## Mean number of rides per driver
+```{r}
+lyft2 %>% filter(event == "dropped_off_at") %>% summarise(mean_rides = n()/n_distinct(driver_id)) 
+```
+
+
+## Mean number of rides per driver on given day of the week
+```{r}
+lyft2$timestamp <- ymd_hms(lyft2$timestamp, tz = Sys.timezone()) 
+
+#find day of week
+lyft2$dayofweek <- weekdays(lyft2$timestamp)
+
+#find mean rides per driver on given day of week
+lyft2 %>% filter(event == "dropped_off_at") %>% group_by(dayofweek) %>% summarise(rides_per_driver = n()/n_distinct(driver_id))
+```
+
+## Heatmap showing rides by hour per day of week
+```{r}
+lyft2$hour <- hour(lyft2$timestamp)
+
+temp <- lyft2 %>% filter(event == "dropped_off_at") %>% arrange(dayofweek)
+
+temp <- table(temp$hour, temp$dayofweek) %>% data.frame()
+temp$Var2 <- factor(temp$Var2, levels = c("Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"))
+temp <- temp %>% arrange(Var2)
+
+ggplot(temp) + geom_tile(aes(Var2, Var1, fill = Freq)) + scale_fill_gradient(low = "white", high = "red") + labs(x = "Day of Week", y = "Hour of Day", title = "Ride Heatmap")
+```
+
+## Are number of rides increasing or decreasing, or staying the same?
+```{r}
+lyft2$months <- months(lyft2$timestamp)
+
+rides_per_month <- lyft2 %>% filter(event == "dropped_off_at" & months != "March") %>% group_by(months) %>% summarise(rides = n())
+rides_per_month$months <- factor(rides_per_month$months, levels = c("April", "May", "June"))
+rides_per_month <- rides_per_month %>% arrange(months)
+ggplot(rides_per_month) + geom_bar(aes(months, rides, fill = months), stat = "identity")
+```
+
+## Can we measure driver retention?
+```{r}
+df1 <- lyft2 %>% filter(months == "April") %>% distinct(driver_id)
+df2 <- lyft2 %>% filter(months == "June") %>% distinct(driver_id)
+length(intersect(df1$driver_id, df2$driver_id))/length(df1$driver_id)
+```
+
+## Number of unique drivers per month
+```{r}
+unique <- lyft2 %>% filter (months != "March" & !is.na(months)) %>% group_by(months) %>% summarise(number_of_drivers = n_distinct(driver_id))
+unique$months <- factor(unique$months, levels = c("April", "May", "June")) 
+unique <- unique %>% arrange(months)
+ggplot(unique) + geom_bar(aes(months, number_of_drivers, fill = months), stat= "identity") + labs(x = "Month", y = "Unique Drivers", title = "Number of Unique Drivers by Month") + theme(legend.position = "none")
+```
+
+## Number of rides per driver by month
+```{r}
+lyft2 %>% filter(event == "dropped_off_at") %>% group_by(months) %>% summarise(rides_per_driver = n()/n_distinct(driver_id))
+```
