@@ -1,4 +1,4 @@
-# Lyft Rides Data Analysis (IN PROGRESS)
+# Lyft Rides Data Analysis
 
 Analyzing Lyft data to draw potential insights about driver and rides patterns. Insights include questions that could be of use to Lyft to improving its rides experience.
 
@@ -40,14 +40,18 @@ Firstly, I wanted to measure the **percentage of successful** pickups. I don't r
 <br>
 I then wanted to find the mean difference between accepted and requested time across prime-time groups. As mentioned earlier, higher prime-time rate could be associated with higher average time between requests and acceptances, but the reverse could also happen depending on the situation. The truth seemed to lie somewhere in between the two situations.  
 
-
+<p align = "center">
+<img src="https://github.com/kevinchen27/lyft-rides-analysis/blob/master/Pictures/prime%20time%20accept%20request.png" width="500" align = "middle"/>
+</p>
 
 A graph of mean difference in times across prime time groups revealed an almost normal distribution, with mean time difference increasing by prime time group until 150 before falling. Interestingly, there were two outliers in the data, with mean time difference for 300 and 400 prime-time groups showing a very high interval. However, on looking at the data, this anomaly was caused primarily by one outlier in each of these groups. For the 350 Prime-Time group, one of observation had a wait time of **1216 seconds**, while the 450 Prime-Time group was skewed by a ride with **422 seconds** between request and acceptance 
 
 ### Drivers with least number of completed rides
 I made a table of drivers with least number of completed rides in the timespan of this dataset. The mean number of rides completed by drivers during this time was 219. On the other hand, the top 10 drivers in terms of least rides completed had less than 25. Identifying these drivers could be useful for Lyft to zero in on why they might have driven so infrequently and whether or not they left Lyft entirely. This could in turn be used to collect survey data to improve driver experience or initiatives to lure them back to Lyft.
 
-
+<p align = "center">
+<img src="https://github.com/kevinchen27/lyft-rides-analysis/blob/master/Pictures/top%2010.png" width="500" align = "middle"/>
+</p>
 
 ### Driver behavior
 Continuing on the topic of Lyft drivers, I did further analysis to uncover more about Lyft driver behavior during this time frame. 
@@ -55,11 +59,17 @@ Continuing on the topic of Lyft drivers, I did further analysis to uncover more 
 <br>
 First, I wanted to see if the number of rides were increasing or decreasing with time. I eliminated March since observations start only on March 27. The results did show a favorable trend for Lyft, with a huge spike in rides from April to May. There is a slight decrease from May to June, but this could be attributed to the the dataset ending its time period on June 27. Correlation is not causation, however, and a number of factors could have contributed to this spike (seasonal, events, transport regulations), and the 10,000 ride deficit from May to June is also unlikely to be coverd in the three remaining days in June
 
+<p align = "center">
+<img src="https://github.com/kevinchen27/lyft-rides-analysis/blob/master/Pictures/rides%20by%20month.png" width="500" align = "middle"/>
+</p>
 
 
 <br>
 A healthier measure of drivers' affinity and happiness with Lyft would be **retention**. Monthly riders is Lyft's North Star metric, and on the driver side, I presume Lyft considers this metric crucial for gauging driver satisfaction. The retention rate from April to June for drivers was **78.06%**, meaning 78% of drivers who completed at least one ride in April completed one ride in June. This amounts to a **churn rate of about 22%**, which does seem quite high to me. 
 
+<p align = "center">
+<img src="https://github.com/kevinchen27/lyft-rides-analysis/blob/master/Pictures/drivers%20by%20month.png" width="500" align = "middle"/>
+</p>
 
 
 Indeed, the number of unique drivers spikes to about 800 in May, but dips to below 800 for the month of June. However, as mentioned, although the number of returning drivers decreased, the number of rides increased. One positive is that those current drivers have a larger share of the rides, but fewer drivers could result in deficit of drivers during peak hours. 
@@ -67,6 +77,10 @@ Indeed, the number of unique drivers spikes to about 800 in May, but dips to bel
 ## Peak times
 
 Peak ride times could be measured in number of rides per day. To gain a better sense of ride-hailing trends, I calculated the frequency of Lyft rides *by day and per hour of day*. This analysis returned the resulting graph:
+
+<p align = "center">
+<img src="https://github.com/kevinchen27/lyft-rides-analysis/blob/master/Pictures/heatmap.png" width="500" align = "middle"/>
+</p>
 
 
 The resulting graph was almost as expected, with peak ride-hailing frequencies for Lyft occurring late at night on weekends and the beginning and end of working hours on weekdays. However, the heat map does suggest that there are slightly more Lyft rides occurring at the end of work than at the beginning of the day. This information could be useful for Lyft for crafting plans to meet demand during peak hours and also possibly to raise demand and supply of rides during other times such as the beginning of a working day when people are going to work (a daily carpool feature, perhaps?).
