@@ -36,7 +36,7 @@ I thought the following insights could be important given the data:
 ## Analysis
 
 ### Percentage of successful pick ups
-Firstly, I wanted to measure the **percentage of sccessful** pickups. I don't really know the standard of "good" and "bad" in the industry, and so was curious to find out. However, I found that the **successful pick-up rate was 100%**; from just my personal experience, I know that some riders do not get picked up for a variety of reasons, and this led me to believe that this dataset consisted only of successful, complete rides.
+Firstly, I wanted to measure the **percentage of successful** pickups. I don't really know the standard of "good" and "bad" in the industry, and so was curious to find out. However, I found that the **successful pick-up rate was 100%**; from just my personal experience, I know that some riders do not get picked up for a variety of reasons, and this led me to believe that this dataset consisted only of successful, complete rides.
 <br>
 I then wanted to find the mean difference between accepted and requested time across prime-time groups. As mentioned earlier, higher prime-time rate could be associated with higher average time between requests and acceptances, but the reverse could also happen depending on the situation. The truth seemed to lie somewhere in between the two situations.  
 
