@@ -66,3 +66,13 @@ Indeed, the number of unique drivers spikes to about 800 in May, but dips to bel
 
 ## Peak times
 
+Peak ride times could be measured in number of rides per day. To gain a better sense of ride-hailing trends, I calculated the frequency of Lyft rides *by day and per hour of day*. This analysis returned the resulting graph:
+
+
+The resulting graph was almost as expected, with peak ride-hailing frequencies for Lyft occurring late at night on weekends and the beginning and end of working hours on weekdays. However, the heat map does suggest that there are slightly more Lyft rides occurring at the end of work than at the beginning of the day. This information could be useful for Lyft for crafting plans to meet demand during peak hours and also possibly to raise demand and supply of rides during other times such as the beginning of a working day when people are going to work (a daily carpool feature, perhaps?).
+
+## Opportunities for further research
+While I enjoyed writing this article and conducting analysis, there are still ways to capitalize on this data and do even more with more information. For example:
+- Mean distance per prime-time group. This could help pricing strategies for Lyft
+- Predicting destination:
+  - If location data were available, data mining methods could help predict which destinations are most common according to pick-up location and time of day/day of week. This could help in devising strategies for pricing and also to make sure demand for drivers is met accordingly. 
