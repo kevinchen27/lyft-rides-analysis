@@ -64,4 +64,5 @@ A healthier measure of drivers' affinity and happiness with Lyft would be **rete
 
 Indeed, the number of unique drivers spikes to about 800 in May, but dips to below 800 for the month of June. However, as mentioned, although the number of returning drivers decreased, the number of rides increased. One positive is that those current drivers have a larger share of the rides, but fewer drivers could result in deficit of drivers during peak hours. 
 
+## Peak times
 
