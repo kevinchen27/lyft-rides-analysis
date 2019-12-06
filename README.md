@@ -12,7 +12,7 @@ As both a rider and from a business perspective, I want to analyze this data set
 
 I obtained the data from Kaggle and is known as the Lyft Data Challenge. Before proceeding with analysis, I first checked to see if there were any extraordinary observations in my data. My data consisted of three separate files, which I joined toegther using inner joins on a common key:
 - driver_ids : contains the driver id's and onboarding dates
-- ride_ids : contains information about rides including irde distance and duration, ride id, the prime time charge, and the associated driver id
+- ride_ids : contains information about rides including ride distance and duration, ride id, the prime time charge, and the associated driver id
 - ride_timestamps : contains the time of event, ride id and event(requested, accepted, etc.)
 <br>
 On looking at the data, there was only one NA value in the timestamp file, and no odd dates, times, or events. The starting date of this data was March 27 and the end date was June 27. However, there were ride distances of less than 0 and as high as 700,000 units. Knowing Lyft rides cannot exceed 100 miles, I assumed that this distance was in feet. Thus, I eliminated entries with more than 100 miles or 528000 feet.
