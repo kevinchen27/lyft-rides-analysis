@@ -28,7 +28,7 @@ I thought the following insights could be important given the data:
 - How many drivers with at least one completed ride in April also completed a ride in June?
 - Frequency of Lyft rides according to hour and day
 
-## Why could these insights by important?
+## Why could these insights be important?
 - Percentage of successful pick ups could be an important indicator for rider retention. Low or drop in percentage of successful pick ups after accepting a request could turn riders away from Lyft and towards competitors
 - Prime time is when Lyft prices are higher than normal. One might expect the mean request and accept times during prime-time to be lower than during non-prime-time since drivers might be more eager to accept a costlier ride. On the other hand, this metric could also be misleading since there is more demand during prime-time, leading to increased pressure on the driver supply which could be outweighed by demand, leading to longer average accept times. However, in general this would probably be something Lyft would be looking to decrease all the time (faster acceptance, greater rider satisfaction)
 - Since this dataset gives us a lot of information about drivers, driver data could be used to see whether drivers are enjoying being Lyft drivers compared to competitors. Ride-hailing services are a two-way street: if demand outweighs supply, than riders might turn elsewhere for transportation. If supply is an issue, then Lyft might be interested in isolating this as a problem.
